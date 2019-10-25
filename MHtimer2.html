@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<meta charset="UTF-8"> 
+
+<html>
+  <head>
+    <title>MHtimer</title>
+  </head>
+<body>
+
+  <h1>Simple timer to run URL</h1>
+
+  <button type="button" onclick="iniTimer()">Start</button>
+  <button type="button" onclick="clrTimer()">Stop URL </button>
+
+<p id="initval"></p>
+<p> Time of last start: &nbsp   <span id="timetext"></span>
+    &nbsp&nbsp Next:  <span id="nexttime"></span></p>
+
+<p> <br>&nbsp Refr Tab &nbsp&nbsp&nbsp&nbsp <span id="tabref"> </span> <br> </p>
+
+<p> &nbsp Current loop &nbsp&nbsp&nbsp&nbsp <span id="tabloop"> </span> </p>
+
+<!-- Fill in initial values -->
+
+<script>
+// var d = new Date();
+var deltatime = 14000;
+var tabcnt = 0;
+var space2 = " &nbsp&nbsp ";
+var loopenable = 1;
+var tabref = 0;
+var URLLink = "https://www.ask.com/web?o=0&l=dir";
+var URLSear = "&qo=serpSearchTopBox&q=geocentric+planet+motion+node";
+
+var nextd = new Date();
+
+//  fill in values with call timer
+var myVar = setTimeout(myTimer, 1);
+console.log("After var    " + myVar);
+
+// clearInterval(myVar);
+
+iniTimer();
+console.log("Initial timer  " + myVar);
+
+// call fails, used setInterval to load initial values
+// mytimer();
+// Why does this not display before "Time of last start:"
+ document.getElementById("initval").innerHTML = mytimer();
+ document.getElementById("initval").innerHTML = "First start " + tabcnt;
+
+
+function iniTimer() {
+  if(myVar) clearInterval(myVar);
+  myVar = setInterval(myTimer, deltatime);
+  loopenable = 1;
+  myTimer();
+  console.log("Start timer    " + myVar);
+}
+
+function clrTimer() {
+  loopenable = 0;
+  console.log("Stop  tab    " + myVar);
+}
+
+function myTimer() {
+  
+  dnow = new Date();
+  document.getElementById("timetext").innerHTML = dnow.toDateString() +
+        space2 + dnow.toLocaleTimeString();
+  document.getElementById("tabloop").innerHTML = ++tabcnt;
+  
+  nextd.setTime(Date.now()+deltatime);
+  document.getElementById("nexttime").innerHTML = nextd.toLocaleTimeString();
+
+  // document.getElementById("tabref").innerHTML = tabref;
+   console.log("End loop " + tabcnt);
+
+  // would like to replace tab but call creates new tab,
+  // so must close previous tab and create new tab
+  if(tabref) tabref.close();
+
+  var typeopen;
+  if (tabref) {
+    typeopen  = "_self";
+  } else {
+    typeopen  = "_blank";
+  }
+
+if (loopenable) {
+  tabref = window.open(URLLink+URLSear+tabcnt,
+    "_blank");
+  document.getElementById("tabref").innerHTML = tabref.toString(16);
+  // how to output pointer/handle to tabref in hex?
+  }
+
+  return tabcnt;
+
+}
+    
+console.log("End script");
+// console.log(mytimer());
+
+</script>
+
+</body>
+</html>
